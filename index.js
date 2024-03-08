@@ -26,13 +26,16 @@ cadastrarVenda = () => {
 
         if (qntVendida <= produtoVendido.quantidade && produtoVendido.tamanho.includes(tamVendido)){
             produtoVendido.quantidade -= qntVendida;
-            produtoVendido.tamanho.pop(tamVendido);
-            console.log(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
+            
+            console.log(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`)
+            menuInicial();
         } else {
-            console.log("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
+            console.log("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.")
+            menuInicial();
         }
     } else {
-    console.log("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
+    console.log("Produto não encontrado. Por favor, verifique o nome e tente novamente.")
+    menuInicial();
     }
 }
 
@@ -129,7 +132,7 @@ switch (menu){
             listaDeProdutos.forEach(estoque => {
                 console.log(`NOME: ${estoque.nome}\n` +
                 `TIPO: ${estoque.tipo}\n` +
-                `QUANTIDADE: ${estoque.quantiade}\n` +
+                `QUANTIDADE: ${estoque.quantidade}\n` +
                 `TAMANHO(S): ${estoque.tamanho}\n` +
                 `R$: ${estoque.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
             });
