@@ -27,14 +27,17 @@ cadastrarVenda = () => {
         if (qntVendida <= produtoVendido.quantidade && produtoVendido.tamanho.includes(tamVendido)){
             produtoVendido.quantidade -= qntVendida;
             
-            console.log(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`)
+            console.log(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
+            alert('Venda registrada com sucesso. Obrigado!');
             menuInicial();
         } else {
-            console.log("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.")
+            console.log("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
+            alert('Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.');
             menuInicial();
         }
     } else {
-    console.log("Produto não encontrado. Por favor, verifique o nome e tente novamente.")
+    console.log("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
+    alert('Produto não encontrado. Por favor, verifique o nome e tente novamente.');
     menuInicial();
     }
 }
