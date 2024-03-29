@@ -1,50 +1,51 @@
-class Produtos {
-    constructor (nome, tipo, quantidade, tamanho, valor){
-        this.nome = nome;
-        this.tipo = tipo;
-        this.quantidade = quantidade;
-        this.tamanho = tamanho;
-        this.valor = valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-    }
-}
+import { Produtos } from "./Produtos.js";
 
 const listaDeProdutos = [];
 
+const verificarEstoque = () => {
+    
+    if (listaDeProdutos.length === 0) {
+        alert("Lista de produtos vazia!");
+        return;
+    }
+
+    alert("Há produtos no estoque!");
+    listaDeProdutos.forEach(produto => {
+        alert(`Nome: ${produto.nome}, Tipo: ${produto.tipo}, Quantidade: ${produto.quantidade}, Tamanhos Disponíveis: ${produto.tamanho}, Valor Unitário: ${produto.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
+    });
+}
+
 //funcao para cadastrar vendas
-cadastrarVenda = () => {
+const cadastrarVenda = () => {
 
 
     const excluirProduto = prompt('Informe o nome do produto vendido');
     
     
-    const produtoVendido = listaDeProdutos.find(exclusaoProduto => exclusaoProduto.nome === excluirProduto);
+    const produtoVendido = listaDeProdutos.find(exclusaoProduto => exclusaoProduto.nome == excluirProduto);
+
+    let qntVendida;
+    let tamVendido;
     
     if (produtoVendido){
-        const qntVendida = parseInt(prompt('Informe a quantidade de itens vendidos desse produto'));
-        const tamVendido = prompt('Informe o(s) tamanho(s) vendido(s)');
-    
+        qntVendida = parseInt(prompt('Informe a quantidade de itens vendidos desse produto'));
+        tamVendido = prompt('Informe o(s) tamanho(s) vendido(s)');
 
         if (qntVendida <= produtoVendido.quantidade && produtoVendido.tamanho.includes(tamVendido)){
-            produtoVendido.quantidade -= qntVendida;
-            
-            console.log(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
-            alert('Venda registrada com sucesso. Obrigado!');
-            menuInicial();
+            produtoVendido.quantidade = produtoVendido.quantidade - qntVendida;
+            produtoVendido.tamanho.pop(tamVendido);
+            alert(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
         } else {
-            console.log("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
-            alert('Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.');
-            menuInicial();
+            alert("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
         }
     } else {
-    console.log("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
-    alert('Produto não encontrado. Por favor, verifique o nome e tente novamente.');
-    menuInicial();
+    alert("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
     }
 }
 
 
 //Funcao para cadastro dos produtos
-casdastroDosProdutos = () => {
+const casdastroDosProdutos = () => {
 
 let opcaoCadastro = 2;
 
@@ -75,6 +76,7 @@ while (opcaoCadastro == 2){
 
 
     alert('Produto cadastrado!');
+                
 
     opcaoCadastro = prompt('(1) Voltar ao menu principal\n'+
             '(2) Cadastrar outro produto')
@@ -87,7 +89,7 @@ while (opcaoCadastro == 2){
 
 
 //Funcao para buscar o produto
-buscarProduto = () => {
+const buscarProduto = () => {
 
 let opcaoBuscador = 2;
 
@@ -96,10 +98,10 @@ while (opcaoBuscador == 2){
 
     listaDeProdutos.forEach(produto => {
         if (produto.nome.toLocaleLowerCase === buscarNome.toLocaleLowerCase){
-            console.log(`Nome: ${produto.nome}, Tipo: ${produto.tipo}, Quantidade: ${produto.quantidade}, Tamanhos Disponíveis: ${produto.tamanho}, Valor Unitário: ${produto.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
+            alert(`Nome: ${produto.nome}, Tipo: ${produto.tipo}, Quantidade: ${produto.quantidade}, Tamanhos Disponíveis: ${produto.tamanho}, Valor Unitário: ${produto.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
     
         } else{
-            console.log('O produto informado não está cadastrado!')
+            alert('O produto informado não está cadastrado!')
         }
     })
 
@@ -112,12 +114,15 @@ while (opcaoBuscador == 2){
 }
 }
 
-
-
+const finalizarPrograma = () => {
+    alert("Programa encerrado!");
+    alert("Obrigado por usar o nosso sistema de vendas!");
+    return;
+}
 
 
 //Funcao para verificar as opcoes do menu
-menuInicial = () => {
+const menuInicial = () => {
     const menu = prompt ('Você está no programa de cadastro de estoque!\n' +
     'Informe uma opção válida:\n'+
     '(1) Verificar estoque\n'+
@@ -135,12 +140,11 @@ switch (menu){
             listaDeProdutos.forEach(estoque => {
                 console.log(`NOME: ${estoque.nome}\n` +
                 `TIPO: ${estoque.tipo}\n` +
-                `QUANTIDADE: ${estoque.quantidade}\n` +
+                `QUANTIDADE: ${estoque.quantiade}\n` +
                 `TAMANHO(S): ${estoque.tamanho}\n` +
                 `R$: ${estoque.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
             });
         }
-        menuInicial()
         break;
     case '2':
         casdastroDosProdutos();
@@ -152,12 +156,19 @@ switch (menu){
         cadastrarVenda();
         break;
     default:
+        finalizarPrograma();
         console.log('Programa encerrado!')
     }
         
 }
 
-menuInicial();
+document.getElementById("verificar-estoque").addEventListener("click", verificarEstoque);
+document.getElementById("cadastrar-produto").addEventListener("click", casdastroDosProdutos);
+document.getElementById("buscar-produto").addEventListener("click", buscarProduto);
+document.getElementById("cadastrar-venda").addEventListener("click", cadastrarVenda);
+document.getElementById("finalizar-estoque").addEventListener("click", finalizarPrograma);
+
+//menuInicial();
 
 
 
