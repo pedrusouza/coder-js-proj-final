@@ -1,0 +1,13 @@
+{
+  "name": "sistema-e-commerce",
+  "version": "1.0.0",
+  "description": "Sitema de cadastro de estoque",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+
+}
