@@ -1,29 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projeto final - Coderhouse</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Estoque</title>
 </head>
 <body>
-    <main id="main">
-        <div id="topo">
-            <img src="./img/logo_coder.png" alt="Sua logo">
+    <button id="abrirFormulario">Cadastrar Produto</button>
+
+    <div id="formulario" style="display: none;">
+      <form id="formCadastro">
+        <label for="nomeProduto">Nome do Produto:</label><br>
+        <input type="text" id="nomeProduto" name="nomeProduto"><br>
+  
+        <label for="tipoProduto">Tipo do Produto:</label><br>
+        <select id="tipoProduto" name="tipoProduto">
+          <option value="Camisetas">Camisetas</option>
+          <option value="Bermudas / Shorts">Bermudas / Shorts</option>
+          <option value="Tênis / Sapatos">Tênis / Sapatos</option>
+          <option value="Acessórios">Acessórios</option>
+        </select><br>
+  
+        <label for="qtProduto">Quantidade Disponível:</label><br>
+        <input type="number" id="qtProduto" name="qtProduto"><br>
+  
+        <label for="tamProduto">Tamanho do Produto:</label><br>
+        <select id="tamProduto" name="tamProduto" multiple>
+        </select><br>
+  
+        <div id="tamanhos" style="display: none;">
+          <label for="tamanhosDisponiveis">Tamanhos Disponíveis (separados por vírgula):</label><br>
+          <input type="text" id="tamanhosDisponiveis" name="tamanhosDisponiveis"><br>
         </div>
 
-        <div class="menu">
-            <button id="verificar-estoque">Verificar estoque</button>
-            <button id="cadastrar-produto">Cadastrar produto</button>
-            <button id="buscar-produto">Buscar produto</button>
-            <button id="cadastrar-venda">Cadastrar venda</button>
-            <button id="finalizar-estoque">Finalizar estoque</button>
-        </div>
+        <label for="vlProduto"> Valor do produto: </label><br>
+        <input type="text" id="vlProduto" name="vlProduto"><br>
+  
+        <button type="submit" id="cadastrarProduto">Cadastrar</button>
+      </form>
+    </div>
+  <div id="resultado"></div>
+  <button id="verificarEstoque">Verificar Estoque</button>
+  <button id="buscarProduto">Buscar Produto</button>
+  <button id="cadastrarVenda">Cadastrar Venda</button>
 
-        <div id="rodape">
-            <img src="./img/rodape_coder.png" alt="Sua logo">
-        </div>
-    </main>
-    <script type="module" src="index.js"></script>
+  <script type="module" src="index.js"></script>
 </body>
 </html>

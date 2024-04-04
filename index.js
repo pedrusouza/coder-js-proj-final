@@ -1,176 +1,132 @@
 import { Produtos } from "./Produtos.js";
 
-const listaDeProdutos = [];
+    const listaDeProdutos = [];
 
-const verificarEstoque = () => {
-    
-    if (listaDeProdutos.length === 0) {
-        alert("Lista de produtos vazia!");
-        return;
+    const resultadoElemento = document.getElementById('resultado');
+
+    function exibirResultado(mensagem) {
+      resultadoElemento.innerText = mensagem;
     }
 
-    alert("Há produtos no estoque!");
-    listaDeProdutos.forEach(produto => {
-        alert(`Nome: ${produto.nome}, Tipo: ${produto.tipo}, Quantidade: ${produto.quantidade}, Tamanhos Disponíveis: ${produto.tamanho}, Valor Unitário: ${produto.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
-    });
-}
+    function cadastrarVenda() {
+      const excluirProduto = prompt('Informe o nome do produto vendido');
+      const produtoVendido = listaDeProdutos.find(exclusaoProduto => exclusaoProduto.nome === excluirProduto);
 
-//funcao para cadastrar vendas
-const cadastrarVenda = () => {
+      let qntVendida;
+      let tamVendido;
 
-
-    const excluirProduto = prompt('Informe o nome do produto vendido');
-    
-    
-    const produtoVendido = listaDeProdutos.find(exclusaoProduto => exclusaoProduto.nome == excluirProduto);
-
-    let qntVendida;
-    let tamVendido;
-    
-    if (produtoVendido){
+      if (produtoVendido) {
         qntVendida = parseInt(prompt('Informe a quantidade de itens vendidos desse produto'));
         tamVendido = prompt('Informe o(s) tamanho(s) vendido(s)');
 
-        if (qntVendida <= produtoVendido.quantidade && produtoVendido.tamanho.includes(tamVendido)){
-            produtoVendido.quantidade = produtoVendido.quantidade - qntVendida;
-            produtoVendido.tamanho.pop(tamVendido);
-            alert(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
+        if (qntVendida <= produtoVendido.quantidade && produtoVendido.tamanho.includes(tamVendido)) {
+          produtoVendido.quantidade = produtoVendido.quantidade - qntVendida;
+          produtoVendido.tamanho.pop(tamVendido);
+          exibirResultado(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
         } else {
-            alert("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
+          exibirResultado("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
         }
-    } else {
-    alert("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
+      } else {
+        exibirResultado("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
+      }
     }
-}
 
+        document.getElementById('abrirFormulario').addEventListener('click', function() {
+        document.getElementById('formulario').style.display = 'block';
+      });
 
-//Funcao para cadastro dos produtos
-const casdastroDosProdutos = () => {
-
-let opcaoCadastro = 2;
-
-//Condicao caso o usuario queira cadastrar outro produto seguido
-while (opcaoCadastro == 2){
-    let nomeProduto = prompt('Informe o nome do produto');
-    let tipoProduto = prompt('Informe o tipo de produto\n'+
-                                '-> Camisetas\n'+
-                                '-> Bermudas / Shorts \n'+
-                                '-> Tênis / Sapatos \n'+
-                                '-> Acessórios');
-    let qtProduto = prompt('Informe a quantidade disponível');
-    let tamProduto = prompt('Tem variedade de tamanhos?\n'+
-                                '(1) Sim  (2) Não');
-        switch (tamProduto){
-            case '1':
-                tamProduto = prompt("Informe os tamanhos disponíveis (separados por vírgula):").split(",");
-                break;
-            case '2':
-                tamProduto = 'Tamanho unico';
-                break;
-        }
-
-    const vlProduto = parseInt(prompt('Informe o valor do produto'));
-
-    let novoProduto = new Produtos(nomeProduto, tipoProduto, qtProduto, tamProduto, vlProduto); 
-    listaDeProdutos.push(novoProduto);
-
-
-    alert('Produto cadastrado!');
-                
-
-    opcaoCadastro = prompt('(1) Voltar ao menu principal\n'+
-            '(2) Cadastrar outro produto')
+      document.getElementById('tipoProduto').addEventListener('change', function() {
+        const tipoProdutoSelecionado = this.value;
+        const tamProdutoSelect = document.getElementById('tamProduto');
+        tamProdutoSelect.innerHTML = '';
         
-    if (opcaoCadastro == 1){
-        menuInicial();
-    }
-}
-}
-
-
-//Funcao para buscar o produto
-const buscarProduto = () => {
-
-let opcaoBuscador = 2;
-
-while (opcaoBuscador == 2){
-    const buscarNome = prompt('Informe o nome do produto');
-
-    listaDeProdutos.forEach(produto => {
-        if (produto.nome.toLocaleLowerCase === buscarNome.toLocaleLowerCase){
-            alert(`Nome: ${produto.nome}, Tipo: ${produto.tipo}, Quantidade: ${produto.quantidade}, Tamanhos Disponíveis: ${produto.tamanho}, Valor Unitário: ${produto.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
-    
-        } else{
-            alert('O produto informado não está cadastrado!')
+        switch (tipoProdutoSelecionado) {
+          case 'Camisetas':
+            adicionarOpcoesTamanho(['PP', 'P' , 'M', 'G', 'GG']);
+            break;
+          case 'Bermudas / Shorts':
+            adicionarOpcoesTamanho(['PP', 'P', 'M', 'G', 'GG']);
+            break;
+          case 'Tênis / Sapatos':
+            adicionarOpcoesTamanho(['35', '36', '37', '38', '39', '40', '41', '42', '43', '44']);
+            break;
+          default:
+            break;
         }
-    })
+      });
+      
+      function adicionarOpcoesTamanho(opcoesTamanho) {
+        const tamProdutoSelect = document.getElementById('tamProduto');
+        opcoesTamanho.forEach(opcao => {
+          const option = document.createElement('option');
+          option.text = opcao;
+          option.value = opcao;
+          tamProdutoSelect.add(option);
+        });
+      }
+  
+        document.getElementById('formCadastro').addEventListener('submit', function(event) {
+        event.preventDefault();
+      
+        const nomeProduto = document.getElementById('nomeProduto').value;
+        const tipoProduto = document.getElementById('tipoProduto').value;
+        const qtProduto = document.getElementById('qtProduto').value;
+        const tamProdutoSelect = document.getElementById('tamProduto');
+        const selectedOptions = Array.from(tamProdutoSelect.selectedOptions); // Obtém todas as opções selecionadas
+        const tamanhosSelecionados = selectedOptions.map(option => option.value)
+        const vlProduto = parseInt(document.getElementById('vlProduto').value);
+
+      
+
+        let novoProduto = new Produtos(nomeProduto, tipoProduto, qtProduto, tamanhosSelecionados, vlProduto); 
+        listaDeProdutos.push(novoProduto);
+        document.getElementById('formulario').style.display = 'none';
+
+        exibirResultado('Produto cadastrado!');
+    });
 
 
-    opcaoBuscador = prompt('(1) Voltar ao menu principal\n'+
-    '(2) Buscar novamente')
-    if (opcaoBuscador == 1){
-        menuInicial();
-    }
-}
-}
+    function buscarProduto() {
+      let opcaoBuscador = 2;
 
-const finalizarPrograma = () => {
-    alert("Programa encerrado!");
-    alert("Obrigado por usar o nosso sistema de vendas!");
-    return;
-}
+      while (opcaoBuscador == 2) {
+        const buscarNome = prompt('Informe o nome do produto');
 
+        const produtoEncontrado = listaDeProdutos.find(produto => produto.nome.toLowerCase() === buscarNome.toLowerCase());
 
-//Funcao para verificar as opcoes do menu
-const menuInicial = () => {
-    const menu = prompt ('Você está no programa de cadastro de estoque!\n' +
-    'Informe uma opção válida:\n'+
-    '(1) Verificar estoque\n'+
-    '(2) Cadastrar produto\n'+
-    '(3) Buscar produto\n'+
-    '(4) Cadastrar uma venda\n'+
-    '(5) Encerrar programa');
-
-
-switch (menu){
-    case '1':
-        if (listaDeProdutos.length == 0){
-            alert('Lista de produtos vazia!')
-        }else{
-            listaDeProdutos.forEach(estoque => {
-                console.log(`NOME: ${estoque.nome}\n` +
-                `TIPO: ${estoque.tipo}\n` +
-                `QUANTIDADE: ${estoque.quantiade}\n` +
-                `TAMANHO(S): ${estoque.tamanho}\n` +
-                `R$: ${estoque.valor.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})}`);
-            });
+        if (produtoEncontrado) {
+          exibirResultado(`Nome: ${produtoEncontrado.nome}, Tipo: ${produtoEncontrado.tipo}, Quantidade: ${produtoEncontrado.quantidade}, Tamanhos Disponíveis: ${produtoEncontrado.tamanho}, Valor Unitário: R$ ${produtoEncontrado.valor.toLocaleString('pt-BR')}`);
+        } else {
+          exibirResultado('O produto informado não está cadastrado!');
         }
-        break;
-    case '2':
-        casdastroDosProdutos();
-        break;
-    case '3':
-        buscarProduto();
-        break;
-    case '4':
-        cadastrarVenda();
-        break;
-    default:
-        finalizarPrograma();
-        console.log('Programa encerrado!')
+
+        opcaoBuscador = prompt('(1) Voltar ao menu principal\n'+
+          '(2) Buscar novamente');
+
+        if (opcaoBuscador == 1) {
+          break;
+        }
+      }
     }
-        
-}
 
-document.getElementById("verificar-estoque").addEventListener("click", verificarEstoque);
-document.getElementById("cadastrar-produto").addEventListener("click", casdastroDosProdutos);
-document.getElementById("buscar-produto").addEventListener("click", buscarProduto);
-document.getElementById("cadastrar-venda").addEventListener("click", cadastrarVenda);
-document.getElementById("finalizar-estoque").addEventListener("click", finalizarPrograma);
+    function verificarEstoque() {
+      if (listaDeProdutos.length === 0) {
+        exibirResultado('Lista de produtos vazia!');
+      } else {
+        let resultado = '';
+        listaDeProdutos.forEach(produto => {
+          resultado += `NOME: ${produto.nome}\n` +
+                      `TIPO: ${produto.tipo}\n` +
+                      `QUANTIDADE: ${produto.quantidade}\n` +
+                      `TAMANHO(S): ${produto.tamanho}\n` +
+                      `${produto.valor.toLocaleString('pt-BR')}\n\n`;
+        });
+        exibirResultado(resultado);
+      }
+    }
 
-//menuInicial();
+    document.getElementById('cadastrarVenda').addEventListener('click', cadastrarVenda);
+    document.getElementById('buscarProduto').addEventListener('click', buscarProduto);
+    document.getElementById('verificarEstoque').addEventListener('click', verificarEstoque);
 
-
-
-
-
+    export { cadastrarVenda, buscarProduto, verificarEstoque };
