@@ -39,6 +39,7 @@
               <div class="form-group">
                 <label for="tipoProduto">Tipo do Produto:</label>
                 <select id="tipoProduto" name="tipoProduto" class="form-control">
+                  <option value="">Selecione uma opção</option>
                   <option value="Camisetas">Camisetas</option>
                   <option value="Bermudas / Shorts">Bermudas / Shorts</option>
                   <option value="Tênis / Sapatos">Tênis / Sapatos</option>
@@ -70,10 +71,27 @@
           <div class="col-md-6">
             <button id="verificarEstoque" class="btn btn-dark">Verificar Estoque</button>
             <button id="buscarProduto" class="btn btn-dark">Buscar Produto</button>
-            <button id="cadastrarVenda" class="btn btn-dark">Cadastrar Venda</button>
+            <button id="btnAbrirModalCadastrarVenda" class="btn btn-dark">Cadastrar Venda</button>
           </div>
         </div>
       </div>
+
+<!-- Modal para cadastrar venda -->
+<div class="modal fade" id="modalCadastrarVenda" tabindex="-1" role="dialog" aria-labelledby="modalCadastrarVendaLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCadastrarVendaLabel">Cadastrar Venda</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalCadastrarVendaBody">
+        <!-- Aqui serão adicionados os campos de entrada dinamicamente -->
+      </div>
+    </div>
+  </div>
+</div>
 
   <!-- Modal Buscar Produto -->
 <div class="modal fade" id="buscarProdutoModal" tabindex="-1" aria-labelledby="buscarProdutoModalLabel" aria-hidden="true">

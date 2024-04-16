@@ -4,6 +4,7 @@
 
       const resultadoElemento = document.getElementById('resultado');
 
+      //Modal utilizado para dar a resposta após a pesquisa ou cadastro de produtos
       function exibirResultado(mensagem) {
         document.getElementById('resultadoTexto').innerText = mensagem;
         $('#resultadoModal').modal('show');
@@ -14,37 +15,114 @@
         $('#buscarProdutoModal').modal('show');
       }
 
-// Atualize os event listeners para chamar as funções corretas ao clicar nos botões
 document.getElementById('buscarProduto').addEventListener('click', exibirModalBuscarProduto);
 
-      function cadastrarVenda() {
-        const excluirProduto = prompt('Informe o nome do produto vendido');
-        const produtoVendido = listaDeProdutos.find(exclusaoProduto => exclusaoProduto.nome === excluirProduto);
+//Função para cadastrar a venda e mostrar os produtos já cadastrados
+function exibirModalCadastrarVenda() {
+  const modalBody = document.getElementById('modalCadastrarVendaBody');
+  modalBody.innerHTML = '';
 
-        let qntVendida;
-        let tamVendido;
+  const form = document.createElement('form');
 
-        if (produtoVendido) {
-          qntVendida = parseInt(prompt('Informe a quantidade de itens vendidos desse produto'));
-          tamVendido = prompt('Informe o(s) tamanho(s) vendido(s)');
+  const selectProduto = document.createElement('select');
+  selectProduto.classList.add('form-select');
+  selectProduto.setAttribute('aria-label', 'Selecionar produto');
 
-          if (qntVendida <= produtoVendido.quantidade && produtoVendido.tamanho.includes(tamVendido)) {
-            produtoVendido.quantidade = produtoVendido.quantidade - qntVendida;
-            produtoVendido.tamanho.pop(tamVendido);
-            exibirResultado(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
-          } else {
-            exibirResultado("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
-          }
-        } else {
-          exibirResultado("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
-        }
+  const defaultOption = document.createElement('option');
+  defaultOption.text = 'Selecione um produto';
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  selectProduto.appendChild(defaultOption);
+
+  listaDeProdutos.forEach(produto => {
+    const option = document.createElement('option');
+    option.value = produto.nome;
+    option.text = `${produto.nome} - Tamanhos disponíveis: ${produto.tamanho.join(', ')}`;
+    selectProduto.appendChild(option);
+  });
+
+  selectProduto.addEventListener('change', function() {
+    const tamanhoProdutoDiv = document.getElementById('tamanhoProdutoDiv');
+    tamanhoProdutoDiv.innerHTML = '';
+
+    const produtoSelecionado = listaDeProdutos.find(produto => produto.nome === selectProduto.value);
+    if (produtoSelecionado) {
+      produtoSelecionado.tamanho.forEach(tamanho => {
+        const checkboxDiv = document.createElement('div');
+        checkboxDiv.classList.add('form-check');
+
+        const checkboxInput = document.createElement('input');
+        checkboxInput.type = 'checkbox';
+        checkboxInput.classList.add('form-check-input');
+        checkboxInput.value = tamanho;
+        checkboxInput.id = `tamanho-${tamanho}`;
+        checkboxInput.name = 'tamanho';
+        
+        const checkboxLabel = document.createElement('label');
+        checkboxLabel.classList.add('form-check-label');
+        checkboxLabel.htmlFor = `tamanho-${tamanho}`;
+        checkboxLabel.textContent = tamanho;
+
+        checkboxDiv.appendChild(checkboxInput);
+        checkboxDiv.appendChild(checkboxLabel);
+
+        tamanhoProdutoDiv.appendChild(checkboxDiv);
+      });
+    }
+  });
+
+  form.appendChild(selectProduto);
+  const tamanhoProdutoDiv = document.createElement('div');
+  tamanhoProdutoDiv.id = 'tamanhoProdutoDiv';
+  form.appendChild(tamanhoProdutoDiv);
+
+  const inputQuantidade = document.createElement('input');
+  inputQuantidade.type = 'number';
+  inputQuantidade.placeholder = 'Quantidade vendida';
+  inputQuantidade.classList.add('form-control', 'mt-3');
+  form.appendChild(inputQuantidade);
+
+  const btnEnviar = document.createElement('button');
+  btnEnviar.type = 'button';
+  btnEnviar.textContent = 'Cadastrar Venda';
+  btnEnviar.classList.add('btn', 'btn-dark', 'mt-3');
+  btnEnviar.addEventListener('click', function() {
+    const nomeProduto = selectProduto.value;
+    const quantidade = parseInt(inputQuantidade.value);
+    const checkboxesSelecionadas = document.querySelectorAll('input[name="tamanho"]:checked');
+    const tamanhosSelecionados = Array.from(checkboxesSelecionadas).map(checkbox => checkbox.value);
+
+    const produtoVendido = listaDeProdutos.find(produto => produto.nome === nomeProduto);
+
+    if (produtoVendido) {
+      if (quantidade <= produtoVendido.quantidade && tamanhosSelecionados.every(tamanho => produtoVendido.tamanho.includes(tamanho))) {
+        produtoVendido.quantidade -= quantidade;
+        tamanhosSelecionados.forEach(tamanho => {
+          produtoVendido.tamanho.splice(produtoVendido.tamanho.indexOf(tamanho), 1);
+        });
+        $('#modalCadastrarVenda').modal('hide');
+        exibirResultado(`Venda registrada com sucesso. Quantidade restante de ${produtoVendido.nome}: ${produtoVendido.quantidade}`);
+      } else {
+        exibirResultado("Quantidade ou tamanho inválido. Por favor, verifique e tente novamente.");
       }
+    } else {
+      exibirResultado("Produto não encontrado. Por favor, verifique o nome e tente novamente.");
+    }
+  });
+  form.appendChild(btnEnviar);
 
+  modalBody.appendChild(form);
+
+  $('#modalCadastrarVenda').modal('show');
+}
+
+
+document.getElementById('btnAbrirModalCadastrarVenda').addEventListener('click', exibirModalCadastrarVenda);
 
       function adicionarOpcoesTamanho(tipoProdutoSelecionado) {
+
         const tamProdutoDiv = document.getElementById('tamProduto');
-        tamProdutoDiv.innerHTML = ''; // Limpa as opções existentes
-      
+        tamProdutoDiv.innerHTML = '';
         let opcoesTamanho = [];
       
         // Determina as opções de tamanho com base no tipo de produto
@@ -89,10 +167,18 @@ document.getElementById('buscarProduto').addEventListener('click', exibirModalBu
         });
       }
       
+      
       // Modifique o evento 'change' do tipo de produto para chamar a função adicionarOpcoesTamanho com o tipo de produto selecionado
       document.getElementById('tipoProduto').addEventListener('change', function() {
         const tipoProdutoSelecionado = this.value;
-        adicionarOpcoesTamanho(tipoProdutoSelecionado);
+        if (tipoProdutoSelecionado == '') {
+          alert('Por favor, selecione uma opção válida.');
+          event.preventDefault();
+        }
+        else{
+          adicionarOpcoesTamanho(tipoProdutoSelecionado);
+          event.preventDefault();
+        }
       });
     
           document.getElementById('formCadastro').addEventListener('submit', function(event) {
@@ -157,7 +243,6 @@ document.getElementById('buscarProduto').addEventListener('click', exibirModalBu
       document.getElementById('abrirFormulario').addEventListener('click', function() {
         $('#formularioModal').modal('show');
       });
-      document.getElementById('cadastrarVenda').addEventListener('click', cadastrarVenda);
+      document.getElementById('btnAbrirModalCadastrarVenda').addEventListener('click', exibirModalCadastrarVenda);
       document.getElementById('buscarProduto').addEventListener('click', buscarProduto);
       document.getElementById('verificarEstoque').addEventListener('click', verificarEstoque);
-      export { cadastrarVenda, buscarProduto, verificarEstoque };
