@@ -6,22 +6,31 @@
   <title>Cadastro de Estoque</title>
   <title>Projeto final - Coderhouse</title>
 
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
+
+  <nav class="navbar" style="background-color: transparent;">
+    <div class="container d-flex justify-content-center">
+      <a class="navbar-brand" href="#">
+        <img src="./img/logo_coder.png" alt="Sua logo" style="width: 80px; height: auto;">
+      </a>
+        <h1 class="text-center text-black">CoderStore</h1>
+        <div class="ml-auto">
+          <button class="btn btn-outline-dark">Contato</button>
+        </div>    
+    </div>
+  </nav>
   <main id="main">
-    <div id="topo">
-        <img src="./img/logo_coder.png" alt="Sua logo">
-    </div>
     <div class="menu">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <button id="abrirFormulario" class="btn btn-dark">Cadastrar Produto</button>
+      <button id="abrirFormulario" class="btn btn-dark">Cadastrar Produto</button>
+      <button id="verificarEstoque" class="btn btn-dark">Verificar Estoque</button>
+      <button id="buscarProduto" class="btn btn-dark">Buscar Produto</button>
+      <button id="btnAbrirModalCadastrarVenda" class="btn btn-dark">Cadastrar Venda</button>
     </div>
-    <div class="modal fade" id="formularioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="formularioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" method="post">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -64,18 +73,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-6">
-            <button id="verificarEstoque" class="btn btn-dark">Verificar Estoque</button>
-            <button id="buscarProduto" class="btn btn-dark">Buscar Produto</button>
-            <button id="btnAbrirModalCadastrarVenda" class="btn btn-dark">Cadastrar Venda</button>
-          </div>
-        </div>
-      </div>
-
 <!-- Modal para cadastrar venda -->
 <div class="modal fade" id="modalCadastrarVenda" tabindex="-1" role="dialog" aria-labelledby="modalCadastrarVendaLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -138,15 +135,16 @@
       </div>
     </div>
   </div>
-
-  <div id="rodape">
-      <img src="./img/rodape_coder.png" alt="Sua logo">
-  </div>
   </main>
 
   <script type="module" src="index.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <div id="rodape">
+      <img src="./img/rodape_coder.png" alt="Sua logo">
+  </div>
+
 </body>
 </html>

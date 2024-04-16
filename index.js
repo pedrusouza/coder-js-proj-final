@@ -173,17 +173,15 @@ document.getElementById('btnAbrirModalCadastrarVenda').addEventListener('click',
         const tipoProdutoSelecionado = this.value;
         if (tipoProdutoSelecionado == '') {
           alert('Por favor, selecione uma opção válida.');
-          event.preventDefault();
         }
         else{
           adicionarOpcoesTamanho(tipoProdutoSelecionado);
-          event.preventDefault();
         }
       });
     
           document.getElementById('formCadastro').addEventListener('submit', function(event) {
-          event.preventDefault();
         
+          event.preventDefault();
           const nomeProduto = document.getElementById('nomeProduto').value;
           const tipoProduto = document.getElementById('tipoProduto').value;
           const qtProduto = document.getElementById('qtProduto').value;
@@ -198,6 +196,7 @@ document.getElementById('btnAbrirModalCadastrarVenda').addEventListener('click',
           document.getElementById('formCadastro').style.display = 'none';
 
           exibirResultado('Produto cadastrado!');
+          $('#formularioModal').modal('hide');
       });
 
       function buscarProduto() {
