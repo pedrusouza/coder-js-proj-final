@@ -4,46 +4,131 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro de Estoque</title>
+  <title>Projeto final - Coderhouse</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
 </head>
 <body>
-    <button id="abrirFormulario">Cadastrar Produto</button>
-
-    <div id="formulario" style="display: none;">
-      <form id="formCadastro">
-        <label for="nomeProduto">Nome do Produto:</label><br>
-        <input type="text" id="nomeProduto" name="nomeProduto"><br>
-  
-        <label for="tipoProduto">Tipo do Produto:</label><br>
-        <select id="tipoProduto" name="tipoProduto">
-          <option value="Camisetas">Camisetas</option>
-          <option value="Bermudas / Shorts">Bermudas / Shorts</option>
-          <option value="Tênis / Sapatos">Tênis / Sapatos</option>
-          <option value="Acessórios">Acessórios</option>
-        </select><br>
-  
-        <label for="qtProduto">Quantidade Disponível:</label><br>
-        <input type="number" id="qtProduto" name="qtProduto"><br>
-  
-        <label for="tamProduto">Tamanho do Produto:</label><br>
-        <select id="tamProduto" name="tamProduto" multiple>
-        </select><br>
-  
-        <div id="tamanhos" style="display: none;">
-          <label for="tamanhosDisponiveis">Tamanhos Disponíveis (separados por vírgula):</label><br>
-          <input type="text" id="tamanhosDisponiveis" name="tamanhosDisponiveis"><br>
-        </div>
-
-        <label for="vlProduto"> Valor do produto: </label><br>
-        <input type="text" id="vlProduto" name="vlProduto"><br>
-  
-        <button type="submit" id="cadastrarProduto">Cadastrar</button>
-      </form>
+  <main id="main">
+    <div id="topo">
+        <img src="./img/logo_coder.png" alt="Sua logo">
     </div>
-  <div id="resultado"></div>
-  <button id="verificarEstoque">Verificar Estoque</button>
-  <button id="buscarProduto">Buscar Produto</button>
-  <button id="cadastrarVenda">Cadastrar Venda</button>
+    <div class="menu">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <button id="abrirFormulario" class="btn btn-dark">Cadastrar Produto</button>
+    </div>
+    <div class="modal fade" id="formularioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cadastrar Produto</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="formCadastro">
+              <div class="form-group">
+                <label for="nomeProduto">Nome do Produto:</label>
+                <input type="text" class="form-control" id="nomeProduto" name="nomeProduto">
+              </div>
+              <div class="form-group">
+                <label for="tipoProduto">Tipo do Produto:</label>
+                <select id="tipoProduto" name="tipoProduto" class="form-control">
+                  <option value="Camisetas">Camisetas</option>
+                  <option value="Bermudas / Shorts">Bermudas / Shorts</option>
+                  <option value="Tênis / Sapatos">Tênis / Sapatos</option>
+                  <option value="Acessórios">Acessórios</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="qtProduto">Quantidade Disponível:</label>
+                <input type="number" class="form-control" id="qtProduto" name="qtProduto">
+              </div>
+              <div class="form-group">
+                <label for="tamProduto">Tamanho do Produto:</label>
+                <div id="tamProduto" name="tamProduto" type="checkbox" class="form-check"></div>
+              </div>
+              <div class="form-group">
+                <label for="vlProduto"> Valor do produto: </label>
+                <input type="text" class="form-control" id="vlProduto" name="vlProduto">
+              </div>
+              <button type="submit" class="btn btn-dark">Cadastrar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Buscar Produto -->
+<div class="modal fade" id="buscarProdutoModal" tabindex="-1" aria-labelledby="buscarProdutoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="buscarProdutoModalLabel">Buscar Produto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formBuscarProduto">
+          <div class="form-group">
+            <label for="buscarNomeProduto">Nome do Produto:</label>
+            <input type="text" class="form-control" id="buscarNomeProduto">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary" id="btnBuscarProduto">Buscar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <div class="modal fade" id="resultadoModal" tabindex="-1" aria-labelledby="resultadoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resultadoModalLabel">Resultado</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="resultadoTexto"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <button id="verificarEstoque" class="btn btn-dark">Verificar Estoque</button>
+            <button id="buscarProduto" class="btn btn-dark">Buscar Produto</button>
+            <button id="cadastrarVenda" class="btn btn-dark">Cadastrar Venda</button>
+          </div>
+        </div>
+      </div>
+
+  <div id="rodape">
+      <img src="./img/rodape_coder.png" alt="Sua logo">
+  </div>
+  </main>
 
   <script type="module" src="index.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
